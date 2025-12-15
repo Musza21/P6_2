@@ -11,8 +11,8 @@ Poniższe zadania będą się sprowadzały do modyfikacji bazowego kodu. Proces 
 
 //Commit6_1. Na podstawie analogii do wyjątku WrongStudentName utwórz i obsłuż wyjątki WrongAge oraz WrongDateOfBirth. 
 //Niepoprawny wiek – gdy jest mniejszy od 0 lub większy niż 100. Niepoprawna data urodzenia – gdy nie jest zapisana w formacie DD-MM-YYYY, np. 28-02-2023.
-
 import java.io.IOException;
+import java.util.InputMismatchException;
 import java.util.Scanner;
 
 class WrongStudentName extends Exception { }
@@ -30,8 +30,13 @@ class Main {
                     case 1: exercise1(); break;
                     case 2: exercise2(); break;
                     case 3: exercise3(); break;
-                    default: return;
+                    case 0: return;
+                    default:
+                        System.out.println("Błędny wybór menu!");
                 }
+            } catch(InputMismatchException e) {
+                System.out.println("Błędny format: litera zamiast cyfry!");
+                scan.nextLine();
             } catch(IOException e) {
 
             } catch(WrongStudentName e) {
@@ -57,6 +62,7 @@ class Main {
         scan.nextLine();
         System.out.println("Podaj imię: ");
         String name = scan.nextLine();
+
         if(name.contains(" "))
             throw new WrongStudentName();
 
@@ -82,7 +88,7 @@ class Main {
         var age = scan.nextInt();
         scan.nextLine();
 
-        if(age < 0 || age > 100)
+        if(age < 0 || age > 99)
             throw new WrongAge();
 
         var date = ReadDateOfBirth();
@@ -101,6 +107,7 @@ class Main {
         scan.nextLine();
         System.out.println("Podaj imię: ");
         var name = scan.nextLine();
+
         var wanted = (new Service()).findStudentByName(name);
         if(wanted == null)
             System.out.println("Nie znaleziono...");
